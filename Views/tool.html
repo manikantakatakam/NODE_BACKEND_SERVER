@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merchant Form</title>
+</head>
+<body>
+    <h1>Merchant Form</h1>
+    <form action="/createOffer" method="POST">
+        <label for="merchantName">Merchant Name:</label><br>
+        <input type="text" id="merchantName" name="merchantName"><br>
+
+        <label for="logo">Logo URL:</label><br>
+        <input type="text" id="logo" name="logo"><br>
+
+        <label for="url">URL:</label><br>
+        <input type="text" id="url" name="url"><br>
+
+        <label for="merchantId">Merchant ID:</label><br>
+        <input type="text" id="merchantId" name="merchantId"><br>
+
+        <h2>Offer Details</h2>
+
+        <label for="offerId">Offer ID:</label><br>
+        <input type="number" id="offerId" name="offerId"><br>
+
+        <label for="offerTitle">Offer Title:</label><br>
+        <input type="text" id="offerTitle" name="offerTitle"><br>
+
+        <label for="offerCode">Offer Code:</label><br>
+        <input type="text" id="offerCode" name="offerCode"><br>
+
+        <label for="offerDescription">Offer Description:</label><br>
+        <textarea id="offerDescription" name="offerDescription"></textarea><br>
+
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
