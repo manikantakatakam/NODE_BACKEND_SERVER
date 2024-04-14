@@ -10,7 +10,9 @@ const PORT = 4000;
 //database connection
 DB();
 
-
+app.get('/', (req, res) => {
+    res.send('Hello NODE API')
+})
 
 //middlewares
 
@@ -18,7 +20,7 @@ DB();
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 
-app.use('/Routes', merchantRoute);
+app.use('/api', merchantRoute);
 
 app.listen(PORT, ()=> {
     console.log(`Node API app is running on port ${PORT}`)

@@ -6,12 +6,14 @@ const MerchantSchema = mongoose.Schema(
         Logo: { type: 'string' },
         Url: { type: 'string' },
         MerchantId: { type: 'string' },
-        offers: {
-            offerID: { type:'number'},
-            offerTitle: { type:'string' },  
-            offerCode: { type:'string' },
-            offerDescription: { type:'string' }
-        }
+        offers: [
+            {
+              offerID: { type:'number'},
+              offerTitle: { type:'string' },  
+              offerCode: { type:'string' },
+              offerDescription: { type:'string' }
+            }
+          ]
 
     },
     {
