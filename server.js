@@ -3,7 +3,6 @@ const DB = require('./DatabaseConnection/mongoose')
 const merchantRoute = require('./Routes/merchantRoute')
 const path = require('path'); 
 
-
 const app = express();
 const PORT = 4000;
 
@@ -11,12 +10,11 @@ const PORT = 4000;
 DB();
 
 app.get('/', (req, res) => {
-    res.send('Hello NODE API')
+    res.send('<h1>Hello NODE API</h1>')
+    //res.sendFile(path.join(__dirname, 'Views','tool.html'));
 })
 
-//middlewares
 
-//app.use(cors(corsOptions))
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 

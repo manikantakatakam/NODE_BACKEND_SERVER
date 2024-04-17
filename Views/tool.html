@@ -1,40 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Merchant Form</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTTP Requests</title>
 </head>
 <body>
-    <h1>Merchant Form</h1>
-    <form action="/createOffer" method="POST">
-        <label for="merchantName">Merchant Name:</label><br>
-        <input type="text" id="merchantName" name="merchantName"><br>
+  <button id="postButton" onclick="storeJson()">Send POST Request</button>
+  <button id="putButton">Send PUT Request</button>
+  <button id="patchButton">Send PATCH Request</button>
+  <button id="getButton">Send GET Request</button>
+  <button id="offerbutton">update offer(sending put request)
+  <button id="deletebutton">delete offer(sending delete request)</button>
 
-        <label for="logo">Logo URL:</label><br>
-        <input type="text" id="logo" name="logo"><br>
+  <script>
+    // Add your fetch requests here
+    
+    document.getElementById('postButton').addEventListener('click', () => {
 
-        <label for="url">URL:</label><br>
-        <input type="text" id="url" name="url"><br>
+      const postData = {
+        "MerchantId": "521354226531",
+        "MerchantName": "Example Store 7",
+        "Logo": "https://example.com/logo.png",
+        "Url": "https://example.com",
+        "offers": [
+          {
+            "offerID": 588,
+            "offerTitle": "10% Off Your First Purchase",
+            "offerCode": "WELCOME10",
+            "offerDescription": "Get 10% off your first purchase with coupon code WELCOME10."
+          },
+          {
+            "offerID": 2986,
+            "offerTitle": "Free Shipping on Orders Over $50",
+            "offerCode": "FREESHIP",
+            "offerDescription": "Enjoy free shipping on orders over $50. No code needed."
+          }
+        ]
+      };
 
-        <label for="merchantId">Merchant ID:</label><br>
-        <input type="text" id="merchantId" name="merchantId"><br>
+      fetch('https://verbose-waddle-qgx6xwpxrvwc69gv-4000.app.github.dev/api/createoffer', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(postData)
+      })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error('Error:', error));
+    });
 
-        <h2>Offer Details</h2>
+    document.getElementById('putButton').addEventListener('click', () => {
+      const putData = {
+        offerID: 1321,
+        offerTitle: '10% Off Your First Purchase',
+        offerCode: 'GOOD10',
+        offerDescription: 'Get 10% off your first purchase with coupon code WELCOME10.'
+    };
 
-        <label for="offerId">Offer ID:</label><br>
-        <input type="number" id="offerId" name="offerId"><br>
+      fetch('https://verbose-waddle-qgx6xwpxrvwc69gv-4000.app.github.dev/api/add-offer/Example Store 6', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(putData)
+      })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error('Error:', error));
+    });
 
-        <label for="offerTitle">Offer Title:</label><br>
-        <input type="text" id="offerTitle" name="offerTitle"><br>
+    document.getElementById('offerbutton').addEventListener('click', () => {
+      const putData = {
+        "offerTitle": "10% off any order",
+        "offerDescription": "This is the updated offer description.",
+        "offerCode": "10OFF"
+      };
+      
 
-        <label for="offerCode">Offer Code:</label><br>
-        <input type="text" id="offerCode" name="offerCode"><br>
+      fetch('https://verbose-waddle-qgx6xwpxrvwc69gv-4000.app.github.dev/api/UpdateOffer/588', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(putData)
+      })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error('Error:', error));
+    });
 
-        <label for="offerDescription">Offer Description:</label><br>
-        <textarea id="offerDescription" name="offerDescription"></textarea><br>
+    document.getElementById('patchButton').addEventListener('click', () => {
+      const patchData = {
+        key1: 'patchedValue1',
+        key2: 'patchedValue2'
+      };
 
-        <input type="submit" value="Submit">
-    </form>
+      fetch('https://api.example.com/data/123', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(patchData)
+      })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error('Error:', error));
+    });
+
+    document.getElementById('getButton').addEventListener('click', () => {
+      fetch('https://verbose-waddle-qgx6xwpxrvwc69gv-4000.app.github.dev/api/data', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error('Error:', error));
+    });
+  </script>
 </body>
 </html>
