@@ -13,6 +13,8 @@
   <button id="offerbutton">update offer(sending put request)
   <button id="deletebutton">delete offer(sending delete request)</button>
 
+  <image src="ïmage1.jpg"></image>
+
   <script>
     // Add your fetch requests here
     
@@ -53,12 +55,16 @@
 
     document.getElementById('putButton').addEventListener('click', () => {
       const putData = {
-        offerID: 1321,
-        offerTitle: '10% Off Your First Purchase',
-        offerCode: 'GOOD10',
-        offerDescription: 'Get 10% off your first purchase with coupon code WELCOME10.'
-    };
-
+        "offerID": 56987,
+        "offerTitle": "20% Off Spring Sale",
+        "offerCode": "SPRING20",
+        "startDate": "2024-04-20",
+        "endDate": "2024-04-30",
+        "status": "active",
+        "offerDescription": "Get 20% off on all products during our Spring Sale event!",
+        "notes": "Limited time offer. Cannot be combined with other promotions."
+      }
+      
       fetch('https://verbose-waddle-qgx6xwpxrvwc69gv-4000.app.github.dev/api/add-offer/Example Store 6', {
         method: 'PUT',
         headers: {
@@ -112,6 +118,20 @@
     document.getElementById('getButton').addEventListener('click', () => {
       fetch('https://verbose-waddle-qgx6xwpxrvwc69gv-4000.app.github.dev/api/data', {
         method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error('Error:', error));
+    });
+
+    document.getElementById('deletebutton').addEventListener('click', () => {
+      const offerIdToDelete = 2986;
+
+      fetch(`https://verbose-waddle-qgx6xwpxrvwc69gv-4000.app.github.dev/api/deleteOffer/${offerIdToDelete}`, {
+        method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
         }

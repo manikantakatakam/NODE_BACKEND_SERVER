@@ -82,4 +82,27 @@ const updateOffer = asyncHandler(async(req, res) => {
 });
 
 
-module.exports = {getMerchant, createOffer, addOffer, updateOffer}
+const deleteOffer = asyncHandler(async(req, res) => {
+    const offerId = req.params.offerId;
+
+    try {
+        // Find the offer by its ID and remove it
+        const updatedMerchant = await Merchant.findOneAndUpdate(
+            { 'offers.offerID': offerId }, // Find by offerID within the offers array
+            { $pull: { offers: { offerID: offerId } } }, // Remove the offer from the offers array
+            { new: true } // Return the updated document
+        );
+
+        if (!updatedMerchant) {
+            return res.status(404).json({ message: 'Offer not found' });
+        }
+
+        res.status(200).json({ message: 'Offer deleted successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
+
+module.exports = {getMerchant, createOffer, addOffer, updateOffer, deleteOffer}
