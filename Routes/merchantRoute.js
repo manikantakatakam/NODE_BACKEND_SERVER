@@ -6,9 +6,9 @@ const { getMerchant, createOffer, addOffer, updateOffer, deleteOffer } = require
 
 const router = express.Router();
 
-router.get('/data', getMerchant);
+router.get('/allData', getMerchant);
 
-router.post('/createoffer', createOffer);
+router.post('/createMerchant', createOffer);
 
 router.put('/add-offer/:merchantName', addOffer);
 
