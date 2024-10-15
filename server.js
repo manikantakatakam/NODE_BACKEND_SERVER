@@ -4,11 +4,20 @@ const DB = require('./DatabaseConnection/mongoose')
 const errorMiddleware = require('./middlewares/errorMiddleware')
 const merchantRoute = require('./Routes/merchantRoute')
 const path = require('path'); 
+const cors = require('cors');
 
 const app = express();
 
+app.use(cors());
+
 const PORT = process.env.PORT || 3000
 const FRONTEND = process.env.FRONTEND
+
+const corsOptions = {
+  origin: [FRONTEND],
+};
+
+app.use(cors(corsOptions));
 
 //database connection
 DB();
