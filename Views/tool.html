@@ -3,143 +3,163 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HTTP Requests</title>
+  <title>API Testing Tool</title>
+  <!--<link rel="stylesheet" href="style.css">-->
+  <style>
+      body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 20px;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+input[type="url"], 
+select, 
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  font-size: 16px;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+#responseSection {
+  margin-top: 20px;
+}
+
+#responseOutput {
+  background-color: #eaeaea;
+  padding: 20px;
+  border-radius: 5px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+  </style>
 </head>
 <body>
-  <button id="postButton" onclick="storeJson()">Send POST Request</button>
-  <button id="putButton">Send PUT Request</button>
-  <button id="patchButton">Send PATCH Request</button>
-  <button id="getButton">Send GET Request</button>
-  <button id="offerbutton">update offer(sending put request)
-  <button id="deletebutton">delete offer(sending delete request)</button>
+  <div class="container">
+    <h1>API Testing Tool</h1>
+    
+    <!-- API request form -->
+    <form id="apiForm">
+      <div class="form-group">
+        <label for="url">API URL:</label>
+        <input type="url" id="url" name="url" placeholder="https://api.example.com" required>
+      </div>
 
-  <image src="ïmage1.jpg"></image>
+      <div class="form-group">
+        <label for="method">Method:</label>
+        <select id="method" name="method">
+          <option value="GET">GET</option>
+          <option value="POST">POST</option>
+          <option value="PUT">PUT</option>
+          <option value="DELETE">DELETE</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="headers">Headers (JSON format):</label>
+        <textarea id="headers" name="headers" placeholder='{"Content-Type": "application/json"}'></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="body">Request Body (JSON format):</label>
+        <textarea id="body" name="body" placeholder='{"key": "value"}'></textarea>
+      </div>
+
+      <button type="submit">Send Request</button>
+    </form>
+
+    <!-- Response section -->
+    <div id="responseSection">
+      <h2>Response</h2>
+      <pre id="responseOutput">Response will appear here...</pre>
+    </div>
+  </div>
 
   <script>
-    // Add your fetch requests here
-    
-    document.getElementById('postButton').addEventListener('click', () => {
+      document.getElementById('apiForm').addEventListener('submit', async function (e) {
+  e.preventDefault();
 
-      const postData = {
-        "MerchantId": "521354226531",
-        "MerchantName": "Example Store 7",
-        "Logo": "https://example.com/logo.png",
-        "Url": "https://example.com",
-        "offers": [
-          {
-            "offerID": 588,
-            "offerTitle": "10% Off Your First Purchase",
-            "offerCode": "WELCOME10",
-            "offerDescription": "Get 10% off your first purchase with coupon code WELCOME10."
-          },
-          {
-            "offerID": 2986,
-            "offerTitle": "Free Shipping on Orders Over $50",
-            "offerCode": "FREESHIP",
-            "offerDescription": "Enjoy free shipping on orders over $50. No code needed."
-          }
-        ]
-      };
+  // Get form data
+  const url = document.getElementById('url').value;
+  const method = document.getElementById('method').value;
+  const headersInput = document.getElementById('headers').value;
+  const bodyInput = document.getElementById('body').value;
 
-      fetch('https://verbose-waddle-qgx6xwpxrvwc69gv-4000.app.github.dev/api/createoffer', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(postData)
-      })
-        .then(response => response.json())
-        .then(data => console.log(data))
-        .catch(error => console.error('Error:', error));
+  let headers = {};
+  let body = null;
+
+  try {
+    // Parse headers and body if JSON
+    if (headersInput.trim()) {
+      headers = JSON.parse(headersInput);
+    }
+
+    if (bodyInput.trim()) {
+      body = JSON.parse(bodyInput);
+    }
+  } catch (error) {
+    alert('Invalid JSON in headers or body.');
+    return;
+  }
+
+  // Update UI
+  document.getElementById('responseOutput').textContent = 'Loading...';
+
+  try {
+    // Make the API request
+    const response = await fetch(url, {
+      method: method,
+      headers: headers,
+      body: method === 'GET' ? null : JSON.stringify(body)
     });
 
-    document.getElementById('putButton').addEventListener('click', () => {
-      const putData = {
-        "offerID": 56987,
-        "offerTitle": "20% Off Spring Sale",
-        "offerCode": "SPRING20",
-        "startDate": "2024-04-20",
-        "endDate": "2024-04-30",
-        "status": "active",
-        "offerDescription": "Get 20% off on all products during our Spring Sale event!",
-        "notes": "Limited time offer. Cannot be combined with other promotions."
-      }
-      
-      fetch('https://verbose-waddle-qgx6xwpxrvwc69gv-4000.app.github.dev/api/add-offer/Example Store 6', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(putData)
-      })
-        .then(response => response.json())
-        .then(data => console.log(data))
-        .catch(error => console.error('Error:', error));
-    });
+    const responseData = await response.json();
 
-    document.getElementById('offerbutton').addEventListener('click', () => {
-      const putData = {
-        "offerTitle": "10% off any order",
-        "offerDescription": "This is the updated offer description.",
-        "offerCode": "10OFF"
-      };
-      
+    // Display the response data
+    document.getElementById('responseOutput').textContent = JSON.stringify(responseData, null, 2);
 
-      fetch('https://verbose-waddle-qgx6xwpxrvwc69gv-4000.app.github.dev/api/UpdateOffer/588', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(putData)
-      })
-        .then(response => response.json())
-        .then(data => console.log(data))
-        .catch(error => console.error('Error:', error));
-    });
+    if (!response.ok) {
+      throw new Error(responseData.message || 'API request failed.');
+    }
+  } catch (error) {
+    document.getElementById('responseOutput').textContent = `Error: ${error.message}`;
+  }
+});
 
-    document.getElementById('patchButton').addEventListener('click', () => {
-      const patchData = {
-        key1: 'patchedValue1',
-        key2: 'patchedValue2'
-      };
-
-      fetch('https://api.example.com/data/123', {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(patchData)
-      })
-        .then(response => response.json())
-        .then(data => console.log(data))
-        .catch(error => console.error('Error:', error));
-    });
-
-    document.getElementById('getButton').addEventListener('click', () => {
-      fetch('https://verbose-waddle-qgx6xwpxrvwc69gv-4000.app.github.dev/api/data', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-        .then(response => response.json())
-        .then(data => console.log(data))
-        .catch(error => console.error('Error:', error));
-    });
-
-    document.getElementById('deletebutton').addEventListener('click', () => {
-      const offerIdToDelete = 2986;
-
-      fetch(`https://verbose-waddle-qgx6xwpxrvwc69gv-4000.app.github.dev/api/deleteOffer/${offerIdToDelete}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-        .then(response => response.json())
-        .then(data => console.log(data))
-        .catch(error => console.error('Error:', error));
-    });
   </script>
 </body>
 </html>

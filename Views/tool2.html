@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTTP Requests</title>
+</head>
+<body>
+  <button id="postButton" onclick="storeJson()">Send POST Request</button>
+  <button id="putButton">Send PUT Request</button>
+  <button id="patchButton">Send PATCH Request</button>
+  <button id="getButton">Send GET Request</button>
+  <button id="offerbutton">update offer(sending put request)
+  <button id="deletebutton">delete offer(sending delete request)</button>
+
+  <image src="ïmage1.jpg"></image>
+
+  <script>
+    // Add your fetch requests here
+    
+    document.getElementById('postButton').addEventListener('click', () => {
+
+      const postData = {
+        "MerchantId": "521354226531",
+        "MerchantName": "Example Store 7",
+        "Logo": "https://example.com/logo.png",
+        "Url": "https://example.com",
+        "offers": [
+          {
+            "offerID": 588,
+            "offerTitle": "10% Off Your First Purchase",
+            "offerCode": "WELCOME10",
+            "offerDescription": "Get 10% off your first purchase with coupon code WELCOME10."
+          },
+          {
+            "offerID": 2986,
+            "offerTitle": "Free Shipping on Orders Over $50",
+            "offerCode": "FREESHIP",
+            "offerDescription": "Enjoy free shipping on orders over $50. No code needed."
+          }
+        ]
+      };
+
+      fetch('https://verbose-waddle-qgx6xwpxrvwc69gv-4000.app.github.dev/api/createoffer', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(postData)
+      })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error('Error:', error));
+    });
+
+    document.getElementById('putButton').addEventListener('click', () => {
+      const putData = {
+        "offerID": 56987,
+        "offerTitle": "20% Off Spring Sale",
+        "offerCode": "SPRING20",
+        "startDate": "2024-04-20",
+        "endDate": "2024-04-30",
+        "status": "active",
+        "offerDescription": "Get 20% off on all products during our Spring Sale event!",
+        "notes": "Limited time offer. Cannot be combined with other promotions."
+      }
+      
+      fetch('https://verbose-waddle-qgx6xwpxrvwc69gv-4000.app.github.dev/api/add-offer/Example Store 6', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(putData)
+      })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error('Error:', error));
+    });
+
+    document.getElementById('offerbutton').addEventListener('click', () => {
+      const putData = {
+        "offerTitle": "10% off any order",
+        "offerDescription": "This is the updated offer description.",
+        "offerCode": "10OFF"
+      };
+      
+
+      fetch('https://verbose-waddle-qgx6xwpxrvwc69gv-4000.app.github.dev/api/UpdateOffer/588', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(putData)
+      })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error('Error:', error));
+    });
+
+    document.getElementById('patchButton').addEventListener('click', () => {
+      const patchData = {
+        key1: 'patchedValue1',
+        key2: 'patchedValue2'
+      };
+
+      fetch('https://api.example.com/data/123', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(patchData)
+      })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error('Error:', error));
+    });
+
+    document.getElementById('getButton').addEventListener('click', () => {
+      fetch('https://verbose-waddle-qgx6xwpxrvwc69gv-4000.app.github.dev/api/data', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error('Error:', error));
+    });
+
+    document.getElementById('deletebutton').addEventListener('click', () => {
+      const offerIdToDelete = 2986;
+
+      fetch(`https://verbose-waddle-qgx6xwpxrvwc69gv-4000.app.github.dev/api/deleteOffer/${offerIdToDelete}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error('Error:', error));
+    });
+  </script>
+</body>
+</html>
