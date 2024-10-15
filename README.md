@@ -32,7 +32,7 @@ The server should now be running at `http://localhost:<port>`
 
 ## API Endpoints
 
-- `GET /api/data`: Get all data about merchants
+- `GET /api/allData`: Get all data about merchants
 - `POST /api/createMerchant`: Create a new Merchant
 - `PUT /api/add-offer/:merchantName`: Add a new offer using merchant name
 - `PUT /api/UpdateOffer/:offerId`: Update existing offer using Offer ID
