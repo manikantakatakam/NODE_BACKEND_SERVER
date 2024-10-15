@@ -2,6 +2,8 @@
 
 This repository contains the backend API for a E-commerce coupon site System built using Node.js, Express, and MongoDB.
 
+[LIVE LINK](https://node-backend-server-lgtz.onrender.com/)
+
 ## Getting Started
 
 To get started with this project, follow these steps:
