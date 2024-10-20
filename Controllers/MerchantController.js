@@ -26,6 +26,25 @@ const createOffer = asyncHandler(async(req, res) => {
     }
 });
 
+//get data by merchant name
+const getMerchantByName = asyncHandler(async (req, res) => {
+    try {
+        const { merchantName } = req.params; // Assuming merchantName comes from the request parameters
+        const merchant = await Merchant.findOne({ MerchantName: new RegExp('^' + merchantName + '$', 'i') });
+        
+        if (!merchant) {
+            res.status(404);
+            throw new Error('Merchant not found');
+        }
+
+        res.status(200).json(merchant);
+    } catch (error) {
+        res.status(500);
+        throw new Error(error.message || 'Error fetching merchant by name');
+    }
+});
+
+
 // adding offer to merchant
 const addOffer = asyncHandler(async(req, res) => {
     const merchantName = req.params.merchantName;
@@ -47,6 +66,32 @@ const addOffer = asyncHandler(async(req, res) => {
       console.error(error);
       res.status(500).json({ message: 'Internal Server Error' });
   }
+});
+
+//updating merchant
+const updateMerchantByName = asyncHandler(async (req, res) => {
+    const { merchantName } = req.params; // Extract merchantName from URL params
+    const updatedData = req.body; // Data for updating the merchant
+
+    try {
+        // Find and update the merchant by MerchantName (case-insensitive)
+        const merchant = await Merchant.findOneAndUpdate(
+            { MerchantName: new RegExp(`^${merchantName}$`, 'i') }, // Case-insensitive search for merchant name
+            updatedData, // Update with the data provided in the body
+            { new: true, runValidators: true } // Return the updated document and run validators
+        );
+
+        // If the merchant is not found, return 404
+        if (!merchant) {
+            return res.status(404).json({ message: 'Merchant not found' });
+        }
+
+        // Send the updated merchant back as a response
+        res.status(200).json(merchant);
+    } catch (error) {
+        console.error('Error updating merchant:', error);
+        res.status(500).json({ message: 'Server Error' });
+    }
 });
 
 // updating offer
@@ -102,4 +147,4 @@ const deleteOffer = asyncHandler(async(req, res) => {
 });
 
 
-module.exports = {getMerchant, createOffer, addOffer, updateOffer, deleteOffer}
+module.exports = {getMerchant, getMerchantByName, createOffer, addOffer, updateMerchantByName, updateOffer, deleteOffer}
